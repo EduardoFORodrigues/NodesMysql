@@ -59,6 +59,52 @@ app.get('/estudantes', function(req, res){
         });
     });
 
+app.get('/delete-estudante', function(req,res){
+
+    var sql = "delete from estudante where id=?";
+
+
+    var id = req.query.id;
+
+    conexao.query(sql,[id], function(error, result){
+        
+        if(error) console.log(error);
+        res.redirect('/estudantes');
+
+    })
+})
+
+//Rota update
+app.get('/update-estudante', function(req, res){
+
+    var sql = "select * from estudante where id=?";
+
+    var id = req.query.id;
+
+    conexao.query(sql,[id], function(error,result){
+
+        if(error) console.log(error);
+        res.render(__dirname + '/alterarestudantes',{estudante:result})
+
+
+    });
+
+})
+app.post('/update-estudante', function(req, res){
+    var nomecompleto = req.body.nomecompleto;
+    var email = req.body.email;
+    var senha = req.body.senha;
+    var id = req.body.id;
+    var sql = "UPDATE estudante set nomecompleto=?, email=?, senha=? where id=?";
+
+    var id = req.query.id;
+
+    conexao.query(sql,[nomecompleto,email,senha,id],function(error,  result){
+        if(error)console.log(error);
+        res.render(__dirname+ '/alterarestudantes',{estudante:result});
+        res.redirect('/estudantes');
+    })
+})
 
 app.listen(7000);
 

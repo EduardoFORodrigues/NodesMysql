@@ -18,6 +18,8 @@
                                 <td><%-estudante[i].id %></td>
                                 <td><%-estudante[i].nomecompleto %></td>     
                                 <td><%-estudante[i].email %></td>
+                                <td><a href="/delete-estudante?id= <%-estudante[i].id %>">Excluir</a></td>
+                                <td><a href="/update-estudante?id= <%-estudante[i].id %>">Atualizar</a></td>
                         </tr>
         <% } %>
         <%} else { %>
