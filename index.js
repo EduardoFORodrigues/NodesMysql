@@ -117,7 +117,63 @@ app.put('/update-estudante', function(req, res){
             }
         );
     }
-});*/
+});
+
+Exemplo
+
+Como implementar validação de senha?
+1. Validação no Frontend (HTML + JS):
+
+Exemplo básico usando JavaScript para validar:
+
+function validarSenha(senha) {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+    // Explicação da regex:
+    // (?=.*[a-z])  --> ao menos uma letra minúscula
+    // (?=.*[A-Z])  --> ao menos uma letra maiúscula
+    // (?=.*\d)     --> ao menos um número
+    // (?=.*[\W_])  --> ao menos um caractere especial
+    // .{8,}        --> pelo menos 8 caracteres no total
+
+    return regex.test(senha);
+}
+
+// Exemplo uso:
+const senha = 'MinhaSenha@123';
+if (!validarSenha(senha)) {
+    alert('Senha inválida: use ao menos 8 caracteres, incluindo letras maiúsculas, minúsculas, números e símbolos.');
+}
+
+2. Validação no Backend (Node.js):
+
+No backend, faça a mesma validação para garantir segurança — nunca confie somente no frontend.
+
+Exemplo usando express-validator:
+
+const { body, validationResult } = require('express-validator');
+
+app.put('/update-estudante', [
+  body('senha')
+    .optional({ checkFalsy: true }) // senha é opcional, só valida se preenchida
+    .isLength({ min: 8 }).withMessage('A senha deve ter pelo menos 8 caracteres')
+    .matches(/[a-z]/).withMessage('A senha deve conter letra minúscula')
+    .matches(/[A-Z]/).withMessage('A senha deve conter letra maiúscula')
+    .matches(/\d/).withMessage('A senha deve conter número')
+    .matches(/[\W_]/).withMessage('A senha deve conter caractere especial'),
+], (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    // Trate o erro, retorne mensagem para o usuário
+    return res.status(400).json({ errors: errors.array() });
+  }
+
+  // Código de atualização de estudante aqui...
+});
+
+
+
+
+*/
 
  
 app.listen(7000);
