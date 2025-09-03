@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+        <title>Lista de Estudantes</title>
+</head>
+
+<body>
+        <h1>Lista de Estudantes</h1>
+        <table border="1" width="100%">
+                <tr>
+                        <th>Código</th>
+                        <th>Nome</th>
+                        <th>E-mail</th>
+                </tr>
+
+                <% if (estudante.length> 0 ) { %>
+                        <% for (var i=0; i < estudante.length; i++) { %>
+                                <tr>
+                                        <td><%-estudante[i].id %></td>
+                                        <td><%-estudante[i].nomecompleto %></td>
+                                        <td><%-estudante[i].email %></td>
+                                        <td>
+                                                <form action="/delete-estudante?_method=DELETE" method="POST"
+                                                        style="display:inline;">
+                                                        <input type="hidden" name="id" value="<%= estudante[i].id %>">
+                                                        <button type="submit"
+                                                                onclick="return confirm('Tem certeza que deseja excluir?')">Excluir</button>
+                                                </form>
+
+                                        </td>
+                                        <td><a href="/update-estudante?id=<%= estudante[i].id %>">Atualizar</a></td>
+                                </tr>
+                                <% } %>
+                                        <%} else { %>
+                                                <h1>Não temos estudantes no banco de dados</h1>
+                                                <% } %>
+        </table>
+
+</body>
+
+</html>
